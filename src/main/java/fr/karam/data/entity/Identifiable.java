@@ -1,2 +1,9 @@
-package fr.karam.data;public interface Identifiable {
+package fr.karam.data.entity;
+
+import java.io.Serializable;
+
+public interface Identifiable<ID extends Serializable> {
+
+    ID get();
+
 }

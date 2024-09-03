@@ -1,2 +1,6 @@
-package fr.karam.data.method;public interface StorageMethod {
+package fr.karam.data.method;
+
+public interface StorageMethod {
+
+
 }

@@ -1,2 +1,4 @@
-package fr.karam.data.type;public class DataCredentials {
+package fr.karam.data.type;
+
+public abstract class DataCredentials {
 }

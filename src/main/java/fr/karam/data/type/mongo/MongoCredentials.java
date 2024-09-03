@@ -2,12 +2,12 @@ package fr.karam.data.type.mongo;
 
 import fr.karam.data.type.DataCredentials;
 
-public class MongoFetcher extends DataCredentials {
+public class MongoCredentials extends DataCredentials {
 
     private String uri;
     private String database;
 
-    public MongoFetcher(String uri, String database) {
+    public MongoCredentials(String uri, String database) {
         this.uri = uri;
         this.database = database;
     }
@@ -16,7 +16,7 @@ public class MongoFetcher extends DataCredentials {
         return uri;
     }
 
-    public MongoFetcher setUri(String uri) {
+    public MongoCredentials setUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -25,7 +25,7 @@ public class MongoFetcher extends DataCredentials {
         return database;
     }
 
-    public MongoFetcher setDatabase(String database) {
+    public MongoCredentials setDatabase(String database) {
         this.database = database;
         return this;
     }

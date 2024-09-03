@@ -1,4 +1,4 @@
-package fr.karam.data.bson;
+package fr.karam.data.utils;
 
 import com.google.gson.*;
 
