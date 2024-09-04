@@ -6,7 +6,9 @@ import java.io.Serializable;
 
 public interface SerializableEntity<ID extends Serializable> extends Identifiable<ID> {
 
+
     void toDocument(EntityDocument document);
-    <T extends SerializableEntity<ID>> T fromDocument(EntityDocument document);
+
+    void fromDocument(EntityDocument document);
 
 }

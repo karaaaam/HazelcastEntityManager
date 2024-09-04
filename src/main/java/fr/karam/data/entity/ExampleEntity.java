@@ -23,18 +23,16 @@ public class ExampleEntity implements SerializableEntity<UUID> {
     }
 
     @Override
-    public <T extends SerializableEntity<UUID>> T fromDocument(EntityDocument document) {
+    public void fromDocument(EntityDocument document) {
         ExampleEntity exampleEntity = new ExampleEntity();
 
         exampleEntity.setUuid(document.get("id", UUID.class));
         exampleEntity.setUsername(document.get("username", String.class));
         exampleEntity.setCredit(document.get("credit", Integer.class));
-
-        return (T) exampleEntity;
     }
 
     @Override
-    public UUID get() {
+    public UUID getIdentifier() {
         return uuid;
     }
 
