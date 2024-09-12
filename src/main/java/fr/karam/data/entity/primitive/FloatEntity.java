@@ -1,4 +1,4 @@
-package fr.karam.data.primitive;
+package fr.karam.data.entity.primitive;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
@@ -6,28 +6,28 @@ import com.hazelcast.nio.serialization.DataSerializable;
 
 import java.io.IOException;
 
-public class BooleanEntity implements DataSerializable {
+public class FloatEntity implements DataSerializable {
 
-    private boolean value;
+    private float value;
 
-    public BooleanEntity() {
+    public FloatEntity() {
     }
 
-    public boolean isValue() {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(boolean value) {
+    public void setValue(float value) {
         this.value = value;
     }
 
     @Override
     public void writeData(ObjectDataOutput out) throws IOException {
-        out.writeBoolean(value);
+        out.writeFloat(value);
     }
 
     @Override
     public void readData(ObjectDataInput in) throws IOException {
-        this.value = in.readBoolean();
+        this.value = in.readFloat();
     }
 }

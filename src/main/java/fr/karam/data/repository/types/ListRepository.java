@@ -14,4 +14,6 @@ public abstract class ListRepository<E extends DataSerializable> extends Reposit
         super(identifier, RepositoryType.LIST);
         this.list = HazelcastManager.INSTANCE.getHazelcast().getList(identifier);
     }
+
+
 }

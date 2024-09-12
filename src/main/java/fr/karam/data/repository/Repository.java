@@ -4,10 +4,11 @@ import com.hazelcast.nio.serialization.DataSerializable;
 import fr.karam.data.HazelcastManager;
 import fr.karam.data.store.EntityFetcher;
 import fr.karam.data.store.FetcherType;
+import fr.karam.data.utils.ClassProvider;
 
 import java.util.List;
 
-public abstract class Repository<E extends DataSerializable> {
+public abstract class Repository<E extends DataSerializable> implements IRepository, ClassProvider<E> {
 
     protected final String identifier;
     protected final RepositoryType type;
@@ -52,7 +53,7 @@ public abstract class Repository<E extends DataSerializable> {
     }
 
     protected E fetch(Object entityID){
-        return (E) entityFetcher.get(identifier, entityID);
+        return entityFetcher.get(identifier, entityID, getClazz());
     }
 
     protected <T> List<T> getInternIds(Class<T> clazz){

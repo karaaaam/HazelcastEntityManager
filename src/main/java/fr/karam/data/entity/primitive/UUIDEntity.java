@@ -1,4 +1,4 @@
-package fr.karam.data.primitive;
+package fr.karam.data.entity.primitive;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;

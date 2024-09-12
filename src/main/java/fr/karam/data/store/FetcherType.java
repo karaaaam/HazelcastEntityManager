@@ -2,7 +2,7 @@ package fr.karam.data.store;
 
 public enum FetcherType {
 
-    MONGO("mongodb")
+    MONGODB("mongodb")
 
     ;
 

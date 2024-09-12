@@ -1,9 +1,10 @@
 package fr.karam.data.example;
 
-import com.hazelcast.jet.json.JsonUtil;
+import com.google.gson.annotations.SerializedName;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.DataSerializable;
+import fr.karam.data.EntityID;
 import fr.karam.data.utils.SerializationUtils;
 
 import java.io.IOException;
@@ -13,7 +14,9 @@ import java.util.UUID;
 
 public class ExampleObject implements DataSerializable {
 
+    @SerializedName("id")
     private UUID uuid;
+
     private String name;
     private int credit;
     private List<String> subEntities;

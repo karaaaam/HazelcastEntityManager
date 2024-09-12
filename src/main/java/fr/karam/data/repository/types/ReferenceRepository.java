@@ -5,14 +5,19 @@ import com.hazelcast.nio.serialization.DataSerializable;
 import fr.karam.data.HazelcastManager;
 import fr.karam.data.repository.Repository;
 import fr.karam.data.repository.RepositoryType;
+import fr.karam.data.store.FetcherType;
 
 public abstract class ReferenceRepository<E extends DataSerializable> extends Repository<E> {
 
     private IAtomicReference<E> reference;
-    private static final Object identifier = "object";
+    private static final Object identifier = "entity";
 
     public ReferenceRepository(String identifier) {
-        super(identifier, RepositoryType.REFERENCE);
+        this(identifier, null);
+    }
+
+    public ReferenceRepository(String identifier, FetcherType fetcherType) {
+        super(identifier, RepositoryType.REFERENCE, fetcherType);
         this.reference = HazelcastManager.INSTANCE.getHazelcast().getCPSubsystem().getAtomicReference(identifier);
     }
 
@@ -35,6 +40,10 @@ public abstract class ReferenceRepository<E extends DataSerializable> extends Re
 
     public boolean isNull(){
         return reference.isNull();
+    }
+
+    public void store(E entity){
+        this.store(identifier, entity);
     }
 
 }

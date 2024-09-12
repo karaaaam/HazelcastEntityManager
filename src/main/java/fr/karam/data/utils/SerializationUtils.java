@@ -1,5 +1,6 @@
 package fr.karam.data.utils;
 
+import com.hazelcast.jet.json.JsonUtil;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 
@@ -53,5 +54,8 @@ public class SerializationUtils {
             list.add(in.readObject());
         }
         return list;
+    }
+
+    public void a(){
     }
 }

@@ -1,14 +1,16 @@
 package fr.karam.data.store.types.mongo;
 
-import com.hazelcast.nio.ObjectDataInput;
-import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.DataSerializable;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import fr.karam.data.store.EntityFetcher;
+import com.mongodb.client.model.ReplaceOptions;
 import fr.karam.data.store.FetcherType;
+import fr.karam.data.store.EntityFetcher;
+import fr.karam.data.utils.GsonUtils;
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -21,7 +23,7 @@ public class MongoFetcher extends EntityFetcher {
     private MongoClient client;
 
     public MongoFetcher(MongoCredentials credentials) {
-        super(FetcherType.MONGO);
+        super(FetcherType.MONGODB);
         this.credentials = credentials;
     }
 
@@ -38,15 +40,17 @@ public class MongoFetcher extends EntityFetcher {
         this.client = MongoClients.create(mongoClientSettings);
     }
 
-
     @Override
-    public DataSerializable get(String key, Object identifier) {
+    public <E extends DataSerializable> E get(String key, Object identifier, Class<E> clazz) {
+        Document id = this.client.getDatabase(this.credentials.getDatabase()).getCollection(key).find(new Document("id", identifier.toString())).first();
+
         return null;
     }
 
     @Override
     public void set(String key, Object identifier, DataSerializable entity) {
-
+        this.client.getDatabase(this.credentials.getDatabase()).getCollection(key)
+                .replaceOne(new Document("id", identifier), Document.parse(GsonUtils.get().toJson(entity)), new ReplaceOptions().upsert(true));
     }
 
     @Override

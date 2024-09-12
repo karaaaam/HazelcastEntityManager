@@ -1,5 +1,7 @@
 package fr.karam.data;
 
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
@@ -20,12 +22,16 @@ public enum HazelcastManager {
         return hazelcast;
     }
 
-    public void newInstance(){
+    public void newMasterInstance(){
         this.hazelcast = Hazelcast.newHazelcastInstance();
     }
 
-    public void newInstance(Config config){
+    public void newMasterInstance(Config config){
         this.hazelcast = Hazelcast.newHazelcastInstance(config);
+    }
+
+    public void newClientInstance(ClientConfig config){
+        this.hazelcast = HazelcastClient.newHazelcastClient(config);
     }
 
     public void registerFetcher(EntityFetcher entityFetcher){
