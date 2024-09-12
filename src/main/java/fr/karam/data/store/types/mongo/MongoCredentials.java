@@ -1,8 +1,6 @@
-package fr.karam.data.type.mongo;
+package fr.karam.data.store.types.mongo;
 
-import fr.karam.data.type.DataCredentials;
-
-public class MongoCredentials extends DataCredentials {
+public class MongoCredentials {
 
     private String uri;
     private String database;
@@ -29,4 +27,5 @@ public class MongoCredentials extends DataCredentials {
         this.database = database;
         return this;
     }
+
 }
