@@ -28,7 +28,7 @@ public abstract class Repository<E extends EntitySerializable> implements IRepos
         this.fetcherType = fetcherType;
 
         if(fetcherType != null){
-            this.entityFetcher = HazelcastManager.INSTANCE. getFetcher(fetcherType);
+            this.entityFetcher = HazelcastManager.INSTANCE.getFetcher(fetcherType);
         }
     }
 

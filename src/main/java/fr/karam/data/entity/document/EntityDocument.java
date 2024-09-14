@@ -11,6 +11,8 @@ public class EntityDocument extends Document {
     @Serial
     private static final long serialVersionUID = 4483217778822883350L;
 
+    private Object id;
+
     public EntityDocument() {
 
     }

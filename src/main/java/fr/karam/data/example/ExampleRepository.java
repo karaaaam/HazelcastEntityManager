@@ -1,13 +1,12 @@
 package fr.karam.data.example;
 
-import fr.karam.data.repository.types.MapRepository;
+import fr.karam.data.repository.types.ReferenceRepository;
+import fr.karam.data.store.FetcherType;
 
-import java.util.UUID;
-
-public class ExampleRepository extends MapRepository<UUID, ExampleObject> {
+public class ExampleRepository extends ReferenceRepository<ExampleObject> {
 
     public ExampleRepository() {
-        super("examples");
+        super("examples", FetcherType.MONGODB);
     }
 
 }
