@@ -1,12 +1,12 @@
 package fr.karam.data.store.types.mongo;
 
-import com.hazelcast.nio.serialization.DataSerializable;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.ReplaceOptions;
+import fr.karam.data.entity.EntitySerializable;
+import fr.karam.data.entity.document.EntityDocument;
 import fr.karam.data.store.FetcherType;
 import fr.karam.data.store.EntityFetcher;
 import fr.karam.data.utils.GsonUtils;
@@ -41,14 +41,20 @@ public class MongoFetcher extends EntityFetcher {
     }
 
     @Override
-    public <E extends DataSerializable> E get(String key, Object identifier, Class<E> clazz) {
-        Document id = this.client.getDatabase(this.credentials.getDatabase()).getCollection(key).find(new Document("id", identifier.toString())).first();
-
-        return null;
+    public <E extends EntitySerializable> E get(String key, Object identifier, Class<E> clazz) {
+        Document document = this.client.getDatabase(this.credentials.getDatabase()).getCollection(key).find(new Document("id", identifier.toString())).first();
+        E entity;
+        try {
+            entity = clazz.newInstance();
+            entity.fromDocument(EntityDocument.fromDocument(document));
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     @Override
-    public void set(String key, Object identifier, DataSerializable entity) {
+    public void set(String key, Object identifier, EntitySerializable entity) {
         this.client.getDatabase(this.credentials.getDatabase()).getCollection(key)
                 .replaceOne(new Document("id", identifier), Document.parse(GsonUtils.get().toJson(entity)), new ReplaceOptions().upsert(true));
     }

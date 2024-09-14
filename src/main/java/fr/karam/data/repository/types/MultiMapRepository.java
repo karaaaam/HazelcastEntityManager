@@ -1,12 +1,12 @@
 package fr.karam.data.repository.types;
 
 import com.hazelcast.multimap.MultiMap;
-import com.hazelcast.nio.serialization.DataSerializable;
 import fr.karam.data.HazelcastManager;
+import fr.karam.data.entity.EntitySerializable;
 import fr.karam.data.repository.Repository;
 import fr.karam.data.repository.RepositoryType;
 
-public abstract class MultiMapRepository<K, V extends DataSerializable> extends Repository<V> {
+public abstract class MultiMapRepository<K, V extends EntitySerializable> extends Repository<V> {
 
     private MultiMap<K, V> multiMap;
 

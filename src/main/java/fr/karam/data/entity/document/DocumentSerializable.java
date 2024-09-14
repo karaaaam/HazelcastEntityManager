@@ -7,4 +7,13 @@ public interface DocumentSerializable {
 
     void fromDocument(EntityDocument document);
 
+    static void loadSerializable(DocumentSerializable serializable, EntityDocument document) {
+        serializable.fromDocument(document);
+    }
+
+    static EntityDocument saveSerializable(DocumentSerializable serializable){
+        EntityDocument entityDocument = new EntityDocument();
+        serializable.toDocument(entityDocument);
+        return entityDocument;
+    }
 }

@@ -1,6 +1,6 @@
 package fr.karam.data.store;
 
-import com.hazelcast.nio.serialization.DataSerializable;
+import fr.karam.data.entity.EntitySerializable;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public abstract class EntityFetcher {
         return fetcherType;
     }
 
-    public abstract <E extends DataSerializable> E get(String key, Object identifier, Class<E> clazz);
+    public abstract <E extends EntitySerializable> E get(String key, Object identifier, Class<E> clazz);
 
-    public abstract void set(String key, Object identifier, DataSerializable entity);
+    public abstract void set(String key, Object identifier, EntitySerializable entity);
 
     public abstract <T> List<T> getAllID(String key, Class<T> clazz);
 

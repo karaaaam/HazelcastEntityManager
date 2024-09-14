@@ -1,12 +1,9 @@
 package fr.karam.data.entity.primitive;
 
-import com.hazelcast.nio.ObjectDataInput;
-import com.hazelcast.nio.ObjectDataOutput;
-import com.hazelcast.nio.serialization.DataSerializable;
+import fr.karam.data.entity.EntitySerializable;
+import fr.karam.data.entity.document.EntityDocument;
 
-import java.io.IOException;
-
-public class StringEntity implements DataSerializable {
+public class StringEntity implements EntitySerializable {
 
     private String value;
 
@@ -22,12 +19,12 @@ public class StringEntity implements DataSerializable {
     }
 
     @Override
-    public void writeData(ObjectDataOutput out) throws IOException {
-        out.writeString(value);
+    public void toDocument(EntityDocument document) {
+        document.put("value", value);
     }
 
     @Override
-    public void readData(ObjectDataInput in) throws IOException {
-        this.value = in.readString();
+    public void fromDocument(EntityDocument document) {
+        this.value = document.getString("value");
     }
 }

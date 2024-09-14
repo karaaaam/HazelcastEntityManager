@@ -1,47 +1,43 @@
 package fr.karam.data.example;
 
-import com.google.gson.annotations.SerializedName;
-import com.hazelcast.nio.ObjectDataInput;
-import com.hazelcast.nio.ObjectDataOutput;
-import com.hazelcast.nio.serialization.DataSerializable;
-import fr.karam.data.EntityID;
-import fr.karam.data.utils.SerializationUtils;
+import fr.karam.data.entity.EntitySerializable;
+import fr.karam.data.entity.document.EntityDocument;
 
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ExampleObject implements DataSerializable {
+public class ExampleObject implements EntitySerializable {
 
-    @SerializedName("id")
     private UUID uuid;
-
     private String name;
     private int credit;
     private List<String> subEntities;
     private Map<String, String> keyWords;
 
+
+    // you need to have an empty constructor
     public ExampleObject() {
 
     }
 
     @Override
-    public void writeData(ObjectDataOutput out) throws IOException {
-        out.writeString(uuid.toString());
-        out.writeString(name);
-        out.writeInt(credit);
-        SerializationUtils.writeList(out, subEntities);
-        SerializationUtils.writeMap(out, keyWords);
+    public void toDocument(EntityDocument document) {
+        document.put("id", uuid);
+        document.put("name", name);
+        document.put("credit", credit);
+        document.put("subEntities", subEntities);
+        document.put("keyWords", keyWords);
     }
 
     @Override
-    public void readData(ObjectDataInput in) throws IOException {
-        this.uuid = UUID.fromString(in.readString());
-        this.name = in.readString();
-        this.credit = in.readInt();
-        this.subEntities = SerializationUtils.readList(in);
-        this.keyWords = SerializationUtils.readMap(in);
+    public void fromDocument(EntityDocument document) {
+        this.uuid = document.getUUID("id");
+        this.name = document.getString("name");
+        this.credit = document.getInteger("credit");
+        this.subEntities = document.getList("subEntities", String.class);
+        this.keyWords = document.get("keyWords", Map.class);
     }
 
     public UUID getUuid() {

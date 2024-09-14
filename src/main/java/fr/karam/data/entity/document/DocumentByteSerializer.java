@@ -16,7 +16,6 @@ public final class DocumentByteSerializer {
     private static final Codec<Document> DOCUMENT_CODEC = new DocumentCodec();
 
     public static byte[] serialize(EntityDocument entityDocument) {
-
         final Document document = entityDocument.asDocument();
         final BasicOutputBuffer outputBuffer = new BasicOutputBuffer();
         final BsonBinaryWriter writer = new BsonBinaryWriter(outputBuffer);
@@ -30,10 +29,7 @@ public final class DocumentByteSerializer {
         final BsonBinaryReader bsonReader = new BsonBinaryReader(ByteBuffer.wrap(bytes));
 
         Document document = DOCUMENT_CODEC.decode(bsonReader, DecoderContext.builder().build());
-        EntityDocument entityDocument = new EntityDocument();
-        entityDocument.fromDocument(document);
-
-        return entityDocument;
+        return EntityDocument.fromDocument(document);
     }
 
 }

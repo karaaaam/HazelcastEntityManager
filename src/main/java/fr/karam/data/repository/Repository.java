@@ -1,14 +1,14 @@
 package fr.karam.data.repository;
 
-import com.hazelcast.nio.serialization.DataSerializable;
 import fr.karam.data.HazelcastManager;
+import fr.karam.data.entity.EntitySerializable;
 import fr.karam.data.store.EntityFetcher;
 import fr.karam.data.store.FetcherType;
 import fr.karam.data.utils.ClassProvider;
 
 import java.util.List;
 
-public abstract class Repository<E extends DataSerializable> implements IRepository, ClassProvider<E> {
+public abstract class Repository<E extends EntitySerializable> implements IRepository, ClassProvider<E> {
 
     protected final String identifier;
     protected final RepositoryType type;

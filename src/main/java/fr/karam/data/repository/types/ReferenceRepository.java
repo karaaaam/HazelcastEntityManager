@@ -1,13 +1,13 @@
 package fr.karam.data.repository.types;
 
 import com.hazelcast.cp.IAtomicReference;
-import com.hazelcast.nio.serialization.DataSerializable;
 import fr.karam.data.HazelcastManager;
+import fr.karam.data.entity.EntitySerializable;
 import fr.karam.data.repository.Repository;
 import fr.karam.data.repository.RepositoryType;
 import fr.karam.data.store.FetcherType;
 
-public abstract class ReferenceRepository<E extends DataSerializable> extends Repository<E> {
+public abstract class ReferenceRepository<E extends EntitySerializable> extends Repository<E> {
 
     private IAtomicReference<E> reference;
     private static final Object identifier = "entity";
