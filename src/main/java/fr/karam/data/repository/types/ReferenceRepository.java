@@ -7,10 +7,12 @@ import fr.karam.data.repository.Repository;
 import fr.karam.data.repository.RepositoryType;
 import fr.karam.data.store.FetcherType;
 
+import java.util.Optional;
+
 public abstract class ReferenceRepository<E extends EntitySerializable> extends Repository<E> {
 
-    private IAtomicReference<E> reference;
-    private static final Object identifier = "entity";
+    private final IAtomicReference<E> reference;
+    private static final Object ENTITY_IDENTIFIER = "entity";
 
     public ReferenceRepository(String identifier) {
         this(identifier, null);
@@ -22,8 +24,19 @@ public abstract class ReferenceRepository<E extends EntitySerializable> extends 
     }
 
     public E get(){
-        if(isNull()) reference.set(this.fetch(identifier));
+        if(isNull() && isStore())
+            reference.set(this.fetch(ENTITY_IDENTIFIER));
+
         return reference.get();
+    }
+
+    public Optional<E> getLocal(){
+        return Optional.of(reference.get());
+    }
+
+    @Deprecated()
+    public E getPersistent(){
+        return this.fetch(ENTITY_IDENTIFIER);
     }
 
     public void set(E entity){
@@ -32,6 +45,10 @@ public abstract class ReferenceRepository<E extends EntitySerializable> extends 
 
     public E getAndSet(E entity){
         return reference.getAndSet(entity);
+    }
+
+    public E update(E entity){
+        return this.getAndSet(entity);
     }
 
     public boolean contains(E entity){
@@ -43,7 +60,17 @@ public abstract class ReferenceRepository<E extends EntitySerializable> extends 
     }
 
     public void store(E entity){
-        this.store(identifier, entity);
+        this.store(ENTITY_IDENTIFIER, entity);
     }
 
+    @Override
+    protected E fetch(Object entityID) {
+        E fetch = super.fetch(entityID);
+
+        if(fetch == null) {
+            //TODO: create new
+        }
+
+        return fetch;
+    }
 }

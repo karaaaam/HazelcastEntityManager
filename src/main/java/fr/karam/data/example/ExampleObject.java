@@ -1,14 +1,16 @@
 package fr.karam.data.example;
 
 import fr.karam.data.entity.EntitySerializable;
+import fr.karam.data.entity.Identifiable;
 import fr.karam.data.entity.document.EntityDocument;
+import fr.karam.data.store.types.mongo.MongoFetcher;
 
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ExampleObject implements EntitySerializable {
+public class ExampleObject implements EntitySerializable, Identifiable<UUID> {
 
     private UUID uuid;
     private String name;
@@ -24,7 +26,7 @@ public class ExampleObject implements EntitySerializable {
 
     @Override
     public void toDocument(EntityDocument document) {
-        document.put("id", uuid);
+        document.put(MongoFetcher.IDENTIFIER_KEY, uuid);
         document.put("name", name);
         document.put("credit", credit);
         document.put("subEntities", subEntities);
@@ -33,7 +35,7 @@ public class ExampleObject implements EntitySerializable {
 
     @Override
     public void fromDocument(EntityDocument document) {
-        this.uuid = document.getUUID("id");
+        this.uuid = document.getUUID(MongoFetcher.IDENTIFIER_KEY);
         this.name = document.getString("name");
         this.credit = document.getInteger("credit");
         this.subEntities = document.getList("subEntities", String.class);
@@ -83,5 +85,10 @@ public class ExampleObject implements EntitySerializable {
     public ExampleObject setKeyWords(Map<String, String> keyWords) {
         this.keyWords = keyWords;
         return this;
+    }
+
+    @Override
+    public UUID getID() {
+        return this.uuid;
     }
 }

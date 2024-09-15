@@ -8,6 +8,7 @@ import com.hazelcast.core.HazelcastInstance;
 import fr.karam.data.store.EntityFetcher;
 import fr.karam.data.store.FetcherType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public enum HazelcastManager {
@@ -15,7 +16,7 @@ public enum HazelcastManager {
     INSTANCE;
 
     private HazelcastInstance hazelcast;
-    private Map<FetcherType, EntityFetcher> registeredFetchers;
+    private final Map<FetcherType, EntityFetcher> registeredFetchers = new HashMap<>();
 
     public HazelcastInstance getHazelcast(){
         if(hazelcast == null) throw new RuntimeException("hazelcast was never instanced");

@@ -48,12 +48,20 @@ public abstract class Repository<E extends EntitySerializable> implements IRepos
         return entityFetcher;
     }
 
+    public boolean isStore() {
+        return this.entityFetcher != null;
+    }
+
     protected void store(Object entityID, E entity){
         entityFetcher.set(identifier, entityID, entity);
     }
 
     protected E fetch(Object entityID){
         return entityFetcher.get(identifier, entityID, getClazz());
+    }
+
+    protected void eradicate(Object entityID){
+        entityFetcher.remove(identifier, entityID);
     }
 
     protected <T> List<T> getInternIds(Class<T> clazz){

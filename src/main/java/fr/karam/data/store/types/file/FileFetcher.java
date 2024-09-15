@@ -31,6 +31,11 @@ public class FileFetcher extends EntityFetcher {
     }
 
     @Override
+    public void remove(String key, Object identifier) {
+
+    }
+
+    @Override
     public <T> List<T> getAllID(String key, Class<T> clazz) {
         return null;
     }

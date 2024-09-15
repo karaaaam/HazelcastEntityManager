@@ -22,7 +22,7 @@ public class MongoFetcher extends EntityFetcher {
     private final MongoCredentials credentials;
     private MongoClient client;
 
-    private final static String MONGO_IDENTIFIER_KEY = "id";
+    public final static String IDENTIFIER_KEY = "_id";
 
     public MongoFetcher(MongoCredentials credentials) {
         super(FetcherType.MONGODB);
@@ -45,7 +45,11 @@ public class MongoFetcher extends EntityFetcher {
     @Override
     public <E extends EntitySerializable> E get(String key, Object identifier, Class<E> clazz) {
         Document document = this.client.getDatabase(this.credentials.getDatabase()).getCollection(key)
-                .find(new Document(MONGO_IDENTIFIER_KEY, identifier.toString())).first();
+                .find(new Document(IDENTIFIER_KEY, identifier.toString())).first();
+
+        if(document == null){
+            return null;
+        }
 
         E entity = DocumentSerializable.loadSerializable(EntityDocument.fromDocument(document), clazz);
         return entity;
@@ -57,7 +61,12 @@ public class MongoFetcher extends EntityFetcher {
         entity.toDocument(document);
 
         this.client.getDatabase(this.credentials.getDatabase()).getCollection(key)
-                .replaceOne(new Document(MONGO_IDENTIFIER_KEY, identifier), document.asDocument(), new ReplaceOptions().upsert(true));
+                .replaceOne(new Document(IDENTIFIER_KEY, identifier), document.asDocument(), new ReplaceOptions().upsert(true));
+    }
+
+    @Override
+    public void remove(String key, Object identifier) {
+
     }
 
     @Override

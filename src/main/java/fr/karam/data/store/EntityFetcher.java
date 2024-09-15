@@ -20,6 +20,8 @@ public abstract class EntityFetcher {
 
     public abstract void set(String key, Object identifier, EntitySerializable entity);
 
+    public abstract void remove(String key, Object identifier);
+
     public abstract <T> List<T> getAllID(String key, Class<T> clazz);
 
 }
