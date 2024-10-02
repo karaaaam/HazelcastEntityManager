@@ -16,6 +16,8 @@ public enum HazelcastManager {
     INSTANCE;
 
     private HazelcastInstance hazelcast;
+
+    private FetcherType defaultFetcher = null;
     private final Map<FetcherType, EntityFetcher> registeredFetchers = new HashMap<>();
 
     public HazelcastInstance getHazelcast(){
@@ -43,5 +45,13 @@ public enum HazelcastManager {
         EntityFetcher entityFetcher = registeredFetchers.get(type);
         if(entityFetcher == null) throw new RuntimeException(type.getIdentifier() + " fetcher type was never instanced");
         return entityFetcher;
+    }
+
+    public FetcherType getDefaultFetcher() {
+        return defaultFetcher;
+    }
+
+    public void setDefaultFetcher(FetcherType defaultFetcher) {
+        this.defaultFetcher = defaultFetcher;
     }
 }

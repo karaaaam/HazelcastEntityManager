@@ -2,10 +2,10 @@ package fr.karam.data.utils;
 
 import java.lang.reflect.ParameterizedType;
 
-public interface ClassProvider<V> {
+public interface ClassProvider<A> {
 
-    default Class<V> getClazz() {
-        return (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    default Class<A> getGenericClazz() {
+        return (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
 }

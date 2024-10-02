@@ -3,8 +3,6 @@ package fr.karam.data.example;
 import fr.karam.data.entity.EntitySerializable;
 import fr.karam.data.entity.Identifiable;
 import fr.karam.data.entity.document.EntityDocument;
-import fr.karam.data.store.types.mongo.MongoFetcher;
-
 
 import java.util.List;
 import java.util.Map;
@@ -24,9 +22,20 @@ public class ExampleObject implements EntitySerializable, Identifiable<UUID> {
 
     }
 
+    // you can have a fully constructor
+    public ExampleObject(UUID uuid, String name, int credit, List<String> subEntities, Map<String, String> keyWords) {
+        this.uuid = uuid;
+        this.name = name;
+        this.credit = credit;
+        this.subEntities = subEntities;
+        this.keyWords = keyWords;
+    }
+
     @Override
     public void toDocument(EntityDocument document) {
-        document.put(MongoFetcher.IDENTIFIER_KEY, uuid);
+        //the key of object id should be EntityDocument.DOCUMENT_ID
+        document.put(DOCUMENT_ID, uuid);
+
         document.put("name", name);
         document.put("credit", credit);
         document.put("subEntities", subEntities);
@@ -35,7 +44,7 @@ public class ExampleObject implements EntitySerializable, Identifiable<UUID> {
 
     @Override
     public void fromDocument(EntityDocument document) {
-        this.uuid = document.getUUID(MongoFetcher.IDENTIFIER_KEY);
+        this.uuid = document.getUUID(DOCUMENT_ID);
         this.name = document.getString("name");
         this.credit = document.getInteger("credit");
         this.subEntities = document.getList("subEntities", String.class);

@@ -10,7 +10,7 @@ import fr.karam.data.entity.document.EntityDocument;
 import java.io.IOException;
 
 public interface EntitySerializable extends DocumentSerializable, DataSerializable {
-
+    
     @Override
     default void readData(ObjectDataInput input) throws IOException {
         byte[] bytes = input.readByteArray();

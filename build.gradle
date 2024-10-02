@@ -13,15 +13,11 @@ repositories {
 
 dependencies {
     implementation 'org.mongodb:mongo-java-driver:3.12.14'
-    implementation 'redis.clients:jedis:5.1.5'
+    implementation 'commons-io:commons-io:2.11.0'
 
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'org.mongodb:bson:5.1.3'
 
-    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
-    implementation 'commons-io:commons-io:2.11.0'
-
-    implementation 'com.hazelcast.jet:hazelcast-jet-mongodb:5.5.0'
     implementation 'com.hazelcast:hazelcast:5.5.0'
 
     testImplementation 'junit:junit:4.13.2'
@@ -39,7 +35,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'fr.karam'
-            artifactId = 'data-api'
+            artifactId = 'entity-framework'
             version = '1.0.0'
 
             from components.java

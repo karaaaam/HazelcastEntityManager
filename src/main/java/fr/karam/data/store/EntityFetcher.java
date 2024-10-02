@@ -8,7 +8,7 @@ public abstract class EntityFetcher {
 
     private final FetcherType fetcherType;
 
-    protected EntityFetcher(FetcherType fetcherType) {
+    public EntityFetcher(FetcherType fetcherType) {
         this.fetcherType = fetcherType;
     }
 

@@ -6,6 +6,7 @@ import fr.karam.data.store.EntityFetcher;
 import fr.karam.data.store.FetcherType;
 import fr.karam.data.utils.ClassProvider;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Repository<E extends EntitySerializable> implements IRepository, ClassProvider<E> {
@@ -53,18 +54,22 @@ public abstract class Repository<E extends EntitySerializable> implements IRepos
     }
 
     protected void store(Object entityID, E entity){
+        if(entityFetcher == null) return;
         entityFetcher.set(identifier, entityID, entity);
     }
 
     protected E fetch(Object entityID){
-        return entityFetcher.get(identifier, entityID, getClazz());
+        if(entityFetcher == null) return null;
+        return entityFetcher.get(identifier, entityID, getGenericClazz());
     }
 
     protected void eradicate(Object entityID){
+        if(entityFetcher == null) return;
         entityFetcher.remove(identifier, entityID);
     }
 
     protected <T> List<T> getInternIds(Class<T> clazz){
+        if(entityFetcher == null) return Collections.emptyList();
         return entityFetcher.getAllID(identifier, clazz);
     }
 

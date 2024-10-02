@@ -7,18 +7,19 @@ import fr.karam.data.entity.Identifiable;
 import fr.karam.data.repository.Repository;
 import fr.karam.data.repository.RepositoryType;
 import fr.karam.data.store.FetcherType;
+import fr.karam.data.utils.BiClassProvider;
 import fr.karam.data.utils.TTLDuration;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-public abstract class MapRepository<K, V extends EntitySerializable & Identifiable<K>> extends Repository<V> {
+public abstract class MapRepository<K, V extends EntitySerializable & Identifiable<K>> extends Repository<V> implements BiClassProvider<K, V> {
 
     private final IMap<K, V> map;
     private TTLDuration ttlDuration;
 
     public MapRepository(String identifier) {
-        this(identifier, null);
+        this(identifier, HazelcastManager.INSTANCE.getDefaultFetcher());
     }
 
     public MapRepository(String identifier, FetcherType fetcherType) {
@@ -61,13 +62,19 @@ public abstract class MapRepository<K, V extends EntitySerializable & Identifiab
 
     public void delete(K key){
         this.map.delete(key);
-
-        if(isStore())
-            this.eradicate(key);
+        this.eradicate(key);
     }
 
     public void delete(V entity){
         this.delete(entity.getID());
+    }
+
+    public void create(V entity){
+        this.store(entity);
+    }
+
+    public void store(V entity){
+        this.store(entity.getID(), entity);
     }
 
     public TTLDuration getTTL() {

@@ -1,6 +1,6 @@
 package fr.karam.data.repository.types;
 
-import com.hazelcast.cp.IAtomicReference;
+import com.hazelcast.map.IMap;
 import fr.karam.data.HazelcastManager;
 import fr.karam.data.entity.EntitySerializable;
 import fr.karam.data.repository.Repository;
@@ -8,30 +8,31 @@ import fr.karam.data.repository.RepositoryType;
 import fr.karam.data.store.FetcherType;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class ReferenceRepository<E extends EntitySerializable> extends Repository<E> {
 
-    private final IAtomicReference<E> reference;
-    private static final Object ENTITY_IDENTIFIER = "entity";
+    private final IMap<String, E> reference;
+    private static final String ENTITY_IDENTIFIER = "entity";
 
     public ReferenceRepository(String identifier) {
-        this(identifier, null);
+        this(identifier, HazelcastManager.INSTANCE.getDefaultFetcher());
     }
 
     public ReferenceRepository(String identifier, FetcherType fetcherType) {
         super(identifier, RepositoryType.REFERENCE, fetcherType);
-        this.reference = HazelcastManager.INSTANCE.getHazelcast().getCPSubsystem().getAtomicReference(identifier);
+        this.reference = HazelcastManager.INSTANCE.getHazelcast().getMap(identifier);
     }
 
     public E get(){
         if(isNull() && isStore())
-            reference.set(this.fetch(ENTITY_IDENTIFIER));
+            reference.put(ENTITY_IDENTIFIER, this.fetch(ENTITY_IDENTIFIER));
 
-        return reference.get();
+        return reference.get(ENTITY_IDENTIFIER);
     }
 
     public Optional<E> getLocal(){
-        return Optional.of(reference.get());
+        return Optional.of(reference.get(ENTITY_IDENTIFIER));
     }
 
     @Deprecated()
@@ -40,23 +41,19 @@ public abstract class ReferenceRepository<E extends EntitySerializable> extends 
     }
 
     public void set(E entity){
-        reference.set(entity);
+        reference.put(ENTITY_IDENTIFIER, entity);
     }
 
-    public E getAndSet(E entity){
+    /*public E getAndSet(E entity){
         return reference.getAndSet(entity);
-    }
-
-    public E update(E entity){
-        return this.getAndSet(entity);
-    }
+    }*/
 
     public boolean contains(E entity){
-        return reference.contains(entity);
+        return reference.get(ENTITY_IDENTIFIER) == entity;
     }
 
     public boolean isNull(){
-        return reference.isNull();
+        return reference.get(ENTITY_IDENTIFIER) == null;
     }
 
     public void store(E entity){
@@ -64,13 +61,20 @@ public abstract class ReferenceRepository<E extends EntitySerializable> extends 
     }
 
     @Override
-    protected E fetch(Object entityID) {
+    public E fetch(Object entityID) {
+        if(!isStore()) return null;
+
         E fetch = super.fetch(entityID);
 
         if(fetch == null) {
-            //TODO: create new
+            E e = defaultEntity().get();
+            this.store(e);
+            return e;
         }
 
         return fetch;
     }
+
+    public abstract Supplier<E> defaultEntity();
+
 }
